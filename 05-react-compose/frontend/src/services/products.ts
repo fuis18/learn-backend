@@ -1,5 +1,5 @@
 import { apiFetch } from "@/lib/api";
-import type { CreateProduct, Product } from "../types/products.types";
+import type { CreateProduct, Product } from "@/types/products";
 
 const RESOURCE = "/products";
 

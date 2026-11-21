@@ -13,14 +13,14 @@ import {
   type Product,
   type ProductFormInput,
   type ProductFormValues,
-} from "@/features/products/types/products.types";
+} from "@/types/products";
 
 import {
   getProductByCode,
   getProductByName,
   createProduct,
   updateProduct,
-} from "@/features/products/api/products.api";
+} from "@/services/products";
 
 interface ProductFormProps {
   product?: Product;
@@ -60,7 +60,7 @@ const ProductForm = ({ product }: ProductFormProps) => {
 
       const existingByName = await getProductByName(parsed.name);
       if (existingByName && (!isEdit || existingByName.id !== product?.id)) {
-        form.setError("name", { type: "manual", message: "Nombre existente" });
+        form.setError("name", { type: "manual", message: "Existing name" });
         return;
       }
 
@@ -139,7 +139,7 @@ const ProductForm = ({ product }: ProductFormProps) => {
       </div>
 
       <div className="flex gap-1 flex-col">
-        <Label htmlFor="price">Precio</Label>
+        <Label htmlFor="price">Price</Label>
         <Input id="price" type="text" {...form.register("price")} />
         {form.formState.errors.price && (
           <p className="text-destructive text-sm">

@@ -1,13 +1,4 @@
-import type { TableFeatures, TableMeta } from "@tanstack/react-table";
 import { z } from "zod";
-
-export interface ProductsTableProps {
-  data: Product[];
-  isLoading?: boolean;
-  error?: Error | null;
-  meta?: TableMeta<TableFeatures, Product>;
-  onSelectionChange?: (rows: Product[]) => void;
-}
 
 /* ---------- Entity ---------- */
 export interface Product {

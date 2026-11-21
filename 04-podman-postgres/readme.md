@@ -10,10 +10,11 @@
 go run .
 
 # start everything
-podman-compose up -d
-podman-compose up -d --build
-# rebuild the app after changing code
-podman-compose build app
+podman-compose up
+
+# build the app
+podman-compose build
+
 # stop
 podman-compose down
 # stop + delete the data volume

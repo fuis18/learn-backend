@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { ArrowDown, ArrowUp, ChevronsUpDown } from "lucide-react";
+import type { TableFeatures, TableMeta } from "@tanstack/react-table";
 import {
   Table,
   TableBody,
@@ -9,8 +10,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import PagTable from "@/components/PaginationTable";
-import type { ProductsTableProps } from "../types/products.types";
-import useProductsTable from "./table/hooks/useProductsTable";
+import useProductsTable from "./useProductsTable";
+import type { Product } from "@/types/products";
+
+interface ProductsTableProps {
+  data: Product[];
+  isLoading?: boolean;
+  error?: Error | null;
+  meta?: TableMeta<TableFeatures, Product>;
+  onSelectionChange?: (rows: Product[]) => void;
+}
 
 const ProductsTable = ({ data, isLoading, error }: ProductsTableProps) => {
   const table = useProductsTable(data);
@@ -31,7 +40,7 @@ const ProductsTable = ({ data, isLoading, error }: ProductsTableProps) => {
 
   return (
     <div>
-      <Table className="ProductsTable">
+      <Table className="products-table">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -103,7 +112,7 @@ const ProductsTable = ({ data, isLoading, error }: ProductsTableProps) => {
                 colSpan={table.getAllLeafColumns().length}
                 className="h-24 text-center text-muted-foreground"
               >
-                Sin productos
+                No products
               </TableCell>
             </TableRow>
           )}

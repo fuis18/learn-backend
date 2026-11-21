@@ -1,8 +1,8 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import type { Product } from "../../types/products.types";
-import type { DataTableFeatures } from "./products-features";
-import ProductDialog from "../ProductDialog";
-import DeleteRow from "./cells/DeleteRow";
+import type { DataTableFeatures } from "@/lib/table-features";
+import type { Product } from "@/types/products";
+import DeleteRow from "./DeleteRow";
+import ProductDialog from "./ProductDialog";
 
 const columnHelper = createColumnHelper<DataTableFeatures, Product>();
 

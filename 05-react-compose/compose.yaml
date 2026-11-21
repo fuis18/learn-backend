@@ -28,6 +28,9 @@ services:
       DB_USER: *db_user
       DB_PASSWORD: *db_password
       DB_NAME: *db_name
+      # Logger
+      LOG_FORMAT: json
+      LOG_LEVEL: debug
     ports:
       - "8080:8080"
     depends_on:
@@ -48,7 +51,7 @@ services:
       - pgdata:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
-      interval: 5s
+      interval: 60s
       timeout: 5s
       retries: 10
     restart: unless-stopped

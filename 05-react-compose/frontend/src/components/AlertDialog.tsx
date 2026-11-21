@@ -10,8 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-export type AlertVariant = "success" | "error";
+import type { AlertVariant } from "@/types/alert";
 
 interface AlertDialogProps {
   open: boolean;
@@ -28,7 +27,7 @@ const AlertDialog = ({
   title,
   description,
   variant = "success",
-  actionLabel = "Aceptar",
+  actionLabel = "Aceppt",
 }: AlertDialogProps) => {
   const isSuccess = variant === "success";
 
@@ -53,9 +52,7 @@ const AlertDialog = ({
             </span>
             <DialogTitle>{title}</DialogTitle>
           </div>
-          {description && (
-            <DialogDescription>{description}</DialogDescription>
-          )}
+          {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
 
         <DialogFooter>

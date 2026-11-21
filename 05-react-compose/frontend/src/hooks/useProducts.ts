@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { listProducts } from "../api/products.api";
-import type { Product } from "../types/products.types";
+import { listProducts } from "@/services/products";
+import type { Product } from "@/types/products";
 
 const EMPTY_PRODUCTS: Product[] = [];
 

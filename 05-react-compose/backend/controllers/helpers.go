@@ -3,11 +3,13 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
-	"log"
+	"log/slog"
 	"net/http"
 	"strconv"
 
 	"github.com/jackc/pgx/v5/pgconn"
+
+	"react-compose/logger"
 )
 
 // writeJSON writes a Go value as a JSON response with the given status code.
@@ -46,10 +48,11 @@ func parseID(r *http.Request) (int, error) {
 	return id, nil
 }
 
-// internalError logs the real cause and answers with a generic 500,
+// internalError logs the real cause with the request-scoped logger (so the
+// line carries the request_id) and answers with a generic 500,
 // so no database details leak to the client.
-func internalError(w http.ResponseWriter, op string, err error) {
-	log.Printf("❌ %s: %v", op, err)
+func internalError(w http.ResponseWriter, r *http.Request, op string, err error) {
+	logger.From(r.Context()).Error(op+" failed", slog.Any("error", err))
 	writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "internal server error"})
 }
 

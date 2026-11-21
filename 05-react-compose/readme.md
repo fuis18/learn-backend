@@ -43,13 +43,10 @@ pnpm lint
 
 ```sh
 # start everything
-podman-compose up -d
-podman-compose up -d --build
+podman-compose up
 
-# rebuild the app after changing code
-# frontend (Vite → dist/)
-podman-compose build nginx
-podman-compose build backend
+# build the app
+podman-compose build
 
 # stop
 podman-compose down

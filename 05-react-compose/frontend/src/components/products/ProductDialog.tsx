@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import FormDialog from "@/components/FormDialog";
 import ProductForm from "./ProductForm";
-import type { Product } from "../types/products.types";
+import type { Product } from "@/types/products";
 
 interface ProductDialogProps {
   product?: Product;

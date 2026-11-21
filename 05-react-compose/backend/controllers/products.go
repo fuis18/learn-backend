@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -12,6 +13,7 @@ import (
 	"github.com/jackc/pgx/v5"
 
 	"react-compose/db"
+	"react-compose/logger"
 	"react-compose/models"
 )
 
@@ -53,7 +55,7 @@ func ListProducts(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Pool.Query(r.Context(),
 		`SELECT `+productColumns+` FROM products ORDER BY id`)
 	if err != nil {
-		internalError(w, "list products", err)
+		internalError(w, r, "list products", err)
 		return
 	}
 	defer rows.Close()
@@ -62,13 +64,13 @@ func ListProducts(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var p models.Product
 		if err := rows.Scan(&p.ID, &p.Code, &p.Name, &p.Price); err != nil {
-			internalError(w, "scan product", err)
+			internalError(w, r, "scan product", err)
 			return
 		}
 		products = append(products, p)
 	}
 	if err := rows.Err(); err != nil {
-		internalError(w, "iterate products", err)
+		internalError(w, r, "iterate products", err)
 		return
 	}
 
@@ -92,7 +94,7 @@ func GetProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err != nil {
-		internalError(w, "get product", err)
+		internalError(w, r, "get product", err)
 		return
 	}
 
@@ -130,12 +132,15 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err != nil {
-		internalError(w, "create product", err)
+		internalError(w, r, "create product", err)
 		return
 	}
 	if explicitCode {
 		keepCodeSequenceAhead(r.Context(), p.Code)
 	}
+
+	logger.From(r.Context()).Info("product created",
+		slog.Int("id", p.ID), slog.String("code", p.Code))
 
 	w.Header().Set("Location", "/api/products/"+strconv.Itoa(p.ID))
 	writeJSON(w, http.StatusCreated, p)
@@ -205,12 +210,15 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err != nil {
-		internalError(w, "update product", err)
+		internalError(w, r, "update product", err)
 		return
 	}
 	if patch.Code != nil {
 		keepCodeSequenceAhead(r.Context(), *patch.Code)
 	}
+
+	logger.From(r.Context()).Info("product updated",
+		slog.Int("id", p.ID), slog.String("code", p.Code))
 
 	writeJSON(w, http.StatusOK, p)
 }
@@ -225,13 +233,15 @@ func DeleteProduct(w http.ResponseWriter, r *http.Request) {
 
 	tag, err := db.Pool.Exec(r.Context(), `DELETE FROM products WHERE id = $1`, id)
 	if err != nil {
-		internalError(w, "delete product", err)
+		internalError(w, r, "delete product", err)
 		return
 	}
 	if tag.RowsAffected() == 0 {
 		writeJSON(w, http.StatusNotFound, map[string]string{"error": "product not found"})
 		return
 	}
+
+	logger.From(r.Context()).Info("product deleted", slog.Int("id", id))
 
 	w.WriteHeader(http.StatusNoContent)
 }

@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import AlertDialog from "@/components/AlertDialog";
 import { useAlert } from "@/hooks/useAlert";
 import { ApiError } from "@/lib/api";
-import { deleteProduct } from "../../../api/products.api";
-import type { Product } from "../../../types/products.types";
+import { deleteProduct } from "@/services/products";
+import type { Product } from "@/types/products";
 
 interface DeleteRowProps {
   product: Product;

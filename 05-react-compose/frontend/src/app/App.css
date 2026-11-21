@@ -1,16 +1,37 @@
-a {
+button {
+  cursor: pointer;
+}
+
+button a {
   height: 100%;
   align-content: center;
   padding-inline: 0.625rem;
 }
 
-button {
-  cursor: pointer;
+main {
+  padding: 0 1rem;
 }
 
 .container-dynamic {
   display: grid;
   grid-template-columns: 1fr min-content;
   gap: 1rem;
-  padding: 0 1rem;
+}
+
+table thead th,
+table tbody td {
+  justify-items: start;
+  text-align: start;
+  align-content: center;
+  padding-inline: 0.5rem;
+}
+
+table tr {
+  display: grid;
+  gap: 1rem;
+  grid-auto-flow: column;
+}
+
+.products-table tr {
+  grid-template-columns: 1fr 2fr 1fr 1fr;
 }

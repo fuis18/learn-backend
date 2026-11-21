@@ -2,10 +2,12 @@ package controllers
 
 import (
 	"context"
-	"log"
+	"log/slog"
 	"net/http"
-	"react-compose/db"
 	"time"
+
+	"react-compose/db"
+	"react-compose/logger"
 )
 
 type checkResult struct {
@@ -28,7 +30,11 @@ func Health(w http.ResponseWriter, r *http.Request) {
 	latency := time.Since(start).Milliseconds()
 
 	if err != nil {
-		log.Printf("⚠️ health check failed (postgres): %v", err)
+		logger.From(r.Context()).Warn("health check failed",
+			slog.String("check", "postgres"),
+			slog.Any("error", err),
+			slog.Int64("latency_ms", latency),
+		)
 		writeJSON(w, http.StatusServiceUnavailable, healthResponse{
 			Status: "down",
 			Checks: map[string]checkResult{

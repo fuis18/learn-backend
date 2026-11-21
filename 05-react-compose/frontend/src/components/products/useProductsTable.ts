@@ -1,12 +1,12 @@
 import { useTable } from "@tanstack/react-table";
 import { CONFIG } from "@/config";
-import type { Product } from "../../../types/products.types";
-import { features } from "../products-features";
-import { productsColumns } from "../products-columns";
+import { dataTableFeatures } from "@/lib/table-features";
+import type { Product } from "@/types/products";
+import { productsColumns } from "./products-columns";
 
 const useProductsTable = (data: Product[]) => {
   return useTable({
-    features,
+    features: dataTableFeatures,
     columns: productsColumns,
     data,
     getRowId: (row) => String(row.id),

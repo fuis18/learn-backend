@@ -2,27 +2,36 @@ package main
 
 import (
 	"context"
-	"log"
+	"log/slog"
 	"net/http"
+	"os"
+	"time"
+
 	"react-compose/controllers"
 	"react-compose/db"
+	"react-compose/logger"
 	"react-compose/middleware"
-	"time"
 )
 
 func main() {
+	// Logger: structured logging with log/slog, configured by LOG_FORMAT and
+	// LOG_LEVEL. Must run before anything else logs.
+	l := logger.Setup()
+
 	// Database: connect and migrate before serving
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
 	if err := db.Connect(ctx); err != nil {
-		log.Fatalf("❌ Database connection failed: %v", err)
+		l.Error("database connection failed", slog.Any("error", err))
+		os.Exit(1)
 	}
 	if err := db.Migrate(ctx); err != nil {
-		log.Fatalf("❌ Migration failed: %v", err)
+		l.Error("migration failed", slog.Any("error", err))
+		os.Exit(1)
 	}
 	defer db.Close()
-	log.Printf("✅ Database connected and up to date")
+	l.Info("database connected and up to date")
 
 	// Routing
 	mux := http.NewServeMux()
@@ -37,8 +46,9 @@ func main() {
 	mux.HandleFunc("PATCH /api/products/{id}", controllers.UpdateProduct)
 	mux.HandleFunc("DELETE /api/products/{id}", controllers.DeleteProduct)
 
-	// Middlewares: Recover inside so Logger records the 500
-	handler := middleware.Logger(middleware.Recover(mux))
+	// Middlewares: RequestID outermost (every log line of a request carries
+	// its request_id), then Logger so it records the 500 produced by Recover.
+	handler := middleware.RequestID(middleware.Logger(middleware.Recover(mux)))
 
 	// Server configuration
 	puerto := ":8080"
@@ -48,10 +58,10 @@ func main() {
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 
-	log.Printf("🚀 Server listening at http://localhost%s\n", srv.Addr)
+	l.Info("server listening", slog.String("addr", "http://localhost"+srv.Addr))
 
-	err := srv.ListenAndServe()
-	if err != nil {
-		log.Fatalf("❌ Critical error starting the server: %v", err)
+	if err := srv.ListenAndServe(); err != nil {
+		l.Error("critical error starting the server", slog.Any("error", err))
+		os.Exit(1)
 	}
 }

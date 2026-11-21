@@ -79,6 +79,8 @@ Carpeta: `05-react-compose/`
     - **Client (layer-based)**
       - **React & Vite**
       - **1 api (products)**
+- **Observability:**
+  - **log/slog**
 
 </details>
 

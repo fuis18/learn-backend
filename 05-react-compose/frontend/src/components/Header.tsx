@@ -1,15 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
 import { useThemeStore } from "@/store/themeStore";
 import { Moon, Sun } from "lucide-react";
 
 const Header = () => {
   const { theme, toggleTheme } = useThemeStore();
   return (
-    <header className="flex justify-around p-2">
-      <Button variant="outline" className="px-0">
-        <Link to="/">Products</Link>
-      </Button>
+    <header className="flex justify-end py-2 px-4">
       <Button
         variant="outline"
         size="icon"

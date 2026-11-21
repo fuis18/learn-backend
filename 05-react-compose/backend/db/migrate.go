@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
-	"log"
+	"log/slog"
 
 	"github.com/jackc/pgx/v5"
 )
@@ -55,12 +55,12 @@ func Migrate(ctx context.Context) error {
 		if err := applyOne(ctx, name); err != nil {
 			return err
 		}
-		log.Printf("✅ migration applied: %s", name)
+		slog.Info("migration applied", slog.String("version", name))
 		pending++
 	}
 
 	if pending == 0 {
-		log.Printf("ℹ️ database up to date (%d migrations)", len(applied))
+		slog.Info("database up to date", slog.Int("applied", len(applied)))
 	}
 	return nil
 }
@@ -100,7 +100,7 @@ func applyOne(ctx context.Context, name string) error {
 	// Safely handle rollback, ignoring ErrTxClosed if the transaction was already committed.
 	defer func() {
 		if rbErr := tx.Rollback(ctx); rbErr != nil && !errors.Is(rbErr, pgx.ErrTxClosed) {
-			log.Printf("db: warning: failed to rollback transaction for %s: %v", name, rbErr)
+			slog.Warn("migration rollback failed", slog.String("version", name), slog.Any("error", rbErr))
 		}
 	}()
 

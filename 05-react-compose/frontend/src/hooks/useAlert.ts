@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { AlertVariant } from "@/components/AlertDialog";
+import type { AlertVariant } from "@/types/alert";
 
 export interface AlertState {
   open: boolean;

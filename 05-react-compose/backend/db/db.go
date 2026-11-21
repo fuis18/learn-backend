@@ -31,7 +31,7 @@ func Connect(ctx context.Context) error {
 		return err
 	}
 
-	pool, err := pgxpool.New(ctx, dsn)
+	pool, err := newPool(ctx, dsn)
 	if err != nil {
 		return fmt.Errorf("db: invalid config for %s: %w", target, err)
 	}
@@ -54,6 +54,18 @@ func Close() {
 		Pool.Close()
 		Pool = nil
 	}
+}
+
+// newPool parses the DSN, attaches the query tracer and creates the pool.
+// The tracer is always attached: it logs each statement at DEBUG level, so
+// it stays silent unless LOG_LEVEL=debug is set.
+func newPool(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
+	cfg, err := pgxpool.ParseConfig(dsn)
+	if err != nil {
+		return nil, err
+	}
+	cfg.ConnConfig.Tracer = queryTracer{}
+	return pgxpool.NewWithConfig(ctx, cfg)
 }
 
 // buildDSN constructs a secure PostgreSQL connection string (DSN) using net/url

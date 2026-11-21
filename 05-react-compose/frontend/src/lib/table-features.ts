@@ -8,7 +8,9 @@ import {
   tableFeatures,
 } from "@tanstack/react-table";
 
-export const features = tableFeatures({
+// Configuración genérica del motor de tablas (sorting + paginación).
+// No conoce ningún dominio: cualquier tabla de la app puede reutilizarla.
+export const dataTableFeatures = tableFeatures({
   rowSortingFeature,
   rowPaginationFeature,
   sortedRowModel: createSortedRowModel(),
@@ -16,4 +18,4 @@ export const features = tableFeatures({
   sortFns: { alphanumeric: sortFn_alphanumeric, text: sortFn_text },
 });
 
-export type DataTableFeatures = typeof features;
+export type DataTableFeatures = typeof dataTableFeatures;
