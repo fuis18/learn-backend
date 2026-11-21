@@ -36,3 +36,5 @@ Carpeta: `03-api-json/`
   - JSON (consumo de APIs)
   - Middlewares (Logger, Recover)
 - Client (views)
+
+![Stage 03](./assets/03-general.png)

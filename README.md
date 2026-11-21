@@ -36,3 +36,6 @@ Folder: `03-api-json/`
   - JSON (API consumption)
   - Middlewares (Logger, Recover)
 - Client (views)
+
+![Stage 03](./assets/03-general.png)
+

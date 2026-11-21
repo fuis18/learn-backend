@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <title>My Client</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body>
+    <h1>My client</h1>
+
+    <div class="container">
+      <!-- Form to create and edit a product (the id travels in a hidden input) -->
+      <form id="product-form">
+        <input type="hidden" name="id" id="id" />
+        <label>
+          Name
+          <input type="text" name="name" id="name" required />
+        </label>
+        <label>
+          Price
+          <input type="number" name="price" id="price" step="0.01" min="0" />
+        </label>
+        <label>
+          Stock
+          <input type="number" name="stock" id="stock" min="0" />
+        </label>
+        <div>
+          <button type="submit">Save</button>
+          <button type="reset">Cancel</button>
+        </div>
+
+        <p id="message"></p>
+      </form>
+
+      <div clas="container-table">
+        <table id="products">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="products-body">
+            <!-- rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="/static/js/app.js" defer></script>
+  </body>
+</html>
