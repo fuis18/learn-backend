@@ -38,3 +38,19 @@ Carpeta: `03-api-json/`
 - Client (views)
 
 ![Stage 03](./assets/03-general.png)
+
+## Fase 4 - PostgreSQL, redes en Podman y migraciones
+
+El dato sobrevive al reinicio: el server se contenedoriza, una base de datos entra en escena y los contenedores aprenden a hablar entre sí.
+
+Carpeta: `04-podman-postgres/`
+
+- Client (views)
+- Podman Compose:
+  - PostgreSQL + Red
+  - Server (Go)
+    - JSON (consumo de APIs)
+    - Middlewares (Logger, Recover)
+    - Migrations
+
+![Stage 04](./assets/04-general.png)

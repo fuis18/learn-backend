@@ -39,3 +39,18 @@ Folder: `03-api-json/`
 
 ![Stage 03](./assets/03-general.png)
 
+## Stage 4 - PostgreSQL, Podman Networking, and Migrations
+
+Data persists across restarts: the server is containerized, a database is introduced, and the containers are configured to communicate with one another.
+
+Folder: `04-podman-postgres/`
+
+- Client (views)
+- Podman Compose:
+  - PostgreSQL + Networking
+  - Server (Go)
+    - JSON (API consumption)
+    - Middlewares (Logger, Recover)
+    - Migrations
+
+![Stage 04](./assets/04-general.png)
