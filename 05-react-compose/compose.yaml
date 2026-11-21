@@ -1,0 +1,57 @@
+x-db-user: &db_user ${DB_USER:?DB_USER is missing from .env}
+x-db-password: &db_password ${DB_PASSWORD:?DB_PASSWORD is missing from .env}
+x-db-name: &db_name ${DB_NAME:?DB_NAME is missing from .env}
+
+services:
+  nginx:
+    image: learn-backend-05-nginx
+    container_name: learn-backend-05-nginx
+    build:
+      context: .
+      dockerfile: Containerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  backend:
+    image: learn-backend-05-backend
+    container_name: learn-backend-05-backend
+    build:
+      context: ./backend
+      dockerfile: Containerfile
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_SSLMODE: disable
+      DB_USER: *db_user
+      DB_PASSWORD: *db_password
+      DB_NAME: *db_name
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: docker.io/library/postgres:18-alpine
+    container_name: learn-backend-05-database
+    environment:
+      POSTGRES_USER: *db_user
+      POSTGRES_PASSWORD: *db_password
+      POSTGRES_DB: *db_name
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  pgdata:

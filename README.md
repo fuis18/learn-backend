@@ -32,10 +32,15 @@ The server moves beyond simply rendering pages; it exposes a JSON-based API usin
 
 Folder: `03-api-json/`
 
+<details>
+<summary>New · JSON · Middlewares</summary>
+
 - Server (Go)
-  - JSON (API consumption)
-  - Middlewares (Logger, Recover)
+  - **JSON (consumo de APIs)**
+  - **Middlewares (Logger, Recover)**
 - Client (views)
+
+</details>
 
 ![Stage 03](./assets/03-general.png)
 
@@ -45,12 +50,41 @@ Data persists across restarts: the server is containerized, a database is introd
 
 Folder: `04-podman-postgres/`
 
+<details>
+<summary>New · Postgres · Compose</summary>
+
 - Client (views)
-- Podman Compose:
-  - PostgreSQL + Networking
+- **Podman Compose:**
+  - **PostgreSQL**
   - Server (Go)
-    - JSON (API consumption)
+    - JSON (consumo de APIs)
     - Middlewares (Logger, Recover)
-    - Migrations
+    - **Migrations**
+
+</details>
 
 ![Stage 04](./assets/04-general.png)
+
+## Stage 5 - React and Nginx
+
+The client shifts to React, and the stack gains a new service: Nginx is introduced as a gateway. In the development environment, Vite runs on the host and proxies requests to the API; in the production-like stack, Nginx serves the built `dist/` directory.
+
+Folder: `05-react-compose/`
+
+<details open>
+<summary>New · React · Nginx</summary>
+
+- Podman Compose:
+  - PostgreSQL
+  - Server (Go)
+    - JSON (consumo de APIs)
+    - Middlewares (Logger, Recover)
+    - Migrations
+  - **Nginx (dist/ + /api)**
+    - **Client (layer-based)**
+      - **React & Vite**
+      - **1 api (products)**
+
+</details>
+
+![Stage 05](./assets/05-general.png)

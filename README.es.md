@@ -1,17 +1,12 @@
 # 🗺️ Roadmap para aprender Backend con Go
 
-## 🛠️ Herramientas de Testing y Desarrollo
-
-- **[Hurl](https://hurl.dev/):** Para pruebas de integración HTTP basadas en ficheros planos.
-- **[xh](https://github.com/ducaale/xh):** Una alternativa rápida y amigable a `curl` para pruebas rápidas.
-
 ## Fase 1 - Enrutamiento y handlers
 
 Construcción de un servidor simple: un solo binario que escucha y responde. El objetivo es entender qué pasa entre que llega una petición y sale la respuesta.
 
 Carpeta: `01-server/`
 
-- Server (Go)
+- **Server (Go)**
 
 ![Fase 01](./assets/01-general.png)
 
@@ -22,7 +17,7 @@ El proyecto ya no cabe en un archivo: la lógica se organiza en models, controll
 Carpeta: `02-server-client/`
 
 - Server (Go)
-- Client (views)
+- **Client (views)**
 
 ![Fase 02](./assets/02-general.png)
 
@@ -32,10 +27,15 @@ El servidor deja de solo pintar páginas: expone una API que habla JSON con los 
 
 Carpeta: `03-api-json/`
 
+<details>
+<summary>JSON · Middlewares</summary>
+
 - Server (Go)
-  - JSON (consumo de APIs)
-  - Middlewares (Logger, Recover)
+  - **JSON (consumo de APIs)**
+  - **Middlewares (Logger, Recover)**
 - Client (views)
+
+</details>
 
 ![Stage 03](./assets/03-general.png)
 
@@ -45,12 +45,41 @@ El dato sobrevive al reinicio: el server se contenedoriza, una base de datos ent
 
 Carpeta: `04-podman-postgres/`
 
+<details>
+<summary>Lo nuevo · Postgres · Compose</summary>
+
 - Client (views)
+- **Podman Compose:**
+  - **PostgreSQL**
+  - Server (Go)
+    - JSON (consumo de APIs)
+    - Middlewares (Logger, Recover)
+    - **Migrations**
+
+</details>
+
+![Stage 04](./assets/04-general.png)
+
+## Fase 5 - React y Nginx
+
+El cliente da el salto a React y el stack gana un nuevo servicio: Nginx entra como puerta de entrada. En desarrollo, Vite corre en el host con proxy a la api; en el stack, Nginx sirve el `dist/` construido.
+
+Carpeta: `05-react-compose/`
+
+<details open>
+<summary>Lo nuevo · React · Nginx</summary>
+
 - Podman Compose:
-  - PostgreSQL + Red
+  - PostgreSQL
   - Server (Go)
     - JSON (consumo de APIs)
     - Middlewares (Logger, Recover)
     - Migrations
+  - **Nginx (dist/ + /api)**
+    - **Client (layer-based)**
+      - **React & Vite**
+      - **1 api (products)**
 
-![Stage 04](./assets/04-general.png)
+</details>
+
+![Stage 05](./assets/05-general.png)

@@ -1,0 +1,6 @@
+# dependencies / build output
+node_modules/
+dist/
+
+# go
+go.sum

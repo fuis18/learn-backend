@@ -1,0 +1,16 @@
+a {
+  height: 100%;
+  align-content: center;
+  padding-inline: 0.625rem;
+}
+
+button {
+  cursor: pointer;
+}
+
+.container-dynamic {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  gap: 1rem;
+  padding: 0 1rem;
+}

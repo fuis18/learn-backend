@@ -1,0 +1,15 @@
+# Secretos y configuración local
+.env
+
+# Código no necesario en la imagen
+test.hurl
+*.md
+
+# Archivos de build/orquestación
+Containerfile
+.containerignore
+compose.yaml
+
+# VCS
+.git
+.gitignore
